@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self Assessment — Kualitas Pengelolaan Lingkungan Kontraktor</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f3; color: #1a1a1a; font-size: 14px; }
+.page { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; }
+.header { border-left: 3px solid #1D9E75; padding-left: 1rem; margin-bottom: 1.5rem; }
+.header h1 { font-size: 20px; font-weight: 500; color: #1a1a1a; }
+.header p { font-size: 13px; color: #666; margin-top: 4px; }
+
+.card { background: #fff; border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 1.5rem; border: 0.5px solid #e0e0d8; }
+.card-title { font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+.upload-zone { border: 1px dashed #bbb; border-radius: 8px; padding: 1.25rem; text-align: center; cursor: pointer; background: #fafaf8; transition: background 0.15s; }
+.upload-zone:hover { background: #f0f0ee; }
+.upload-zone input[type=file] { display: none; }
+.upload-icon { font-size: 24px; margin-bottom: 6px; color: #888; }
+.upload-main { font-size: 13px; font-weight: 500; color: #333; }
+.upload-sub { font-size: 11px; color: #999; margin-top: 3px; }
+.file-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.file-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; background: #fafaf8; border: 0.5px solid #e0e0d8; border-radius: 8px; font-size: 12px; }
+.file-item-name { flex: 1; color: #333; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-item-size { color: #888; font-size: 11px; flex-shrink: 0; }
+.file-remove { color: #aaa; cursor: pointer; font-size: 14px; flex-shrink: 0; }
+.file-remove:hover { color: #e24b4a; }
+.file-ext { font-size: 10px; font-weight: 600; padding: 2px 5px; border-radius: 3px; flex-shrink: 0; }
+.ext-pdf { background: #fcebeb; color: #a32d2d; }
+.ext-doc { background: #e6f1fb; color: #185fa5; }
+.ext-img { background: #eaf3de; color: #3b6d11; }
+.ext-other { background: #f0f0ee; color: #666; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.meta-item label { display: block; font-size: 11px; color: #777; margin-bottom: 3px; }
+.meta-item input, .meta-item select { width: 100%; padding: 7px 10px; font-size: 13px; border: 0.5px solid #ddd; border-radius: 8px; background: #fff; color: #1a1a1a; font-family: inherit; }
+.meta-item input:focus, .meta-item select:focus { outline: none; border-color: #1D9E75; }
+
+.legend-row { display: flex; gap: 16px; flex-wrap: wrap; font-size: 11px; color: #777; margin-bottom: 1rem; align-items: center; }
+.legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 3px; vertical-align: middle; }
+
+.section { margin-bottom: 1.25rem; border-radius: 10px; overflow: hidden; border: 0.5px solid #e0e0d8; }
+.section-header { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #f5f5f3; cursor: pointer; user-select: none; }
+.sec-badge { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.section-title { font-size: 13px; font-weight: 500; color: #1a1a1a; flex: 1; }
+.bobot-tag { font-size: 11px; color: #888; }
+.chevron { font-size: 11px; color: #888; transition: transform 0.2s; display: inline-block; }
+.chevron.open { transform: rotate(90deg); }
+.section-body { display: none; background: #fff; }
+.section-body.open { display: block; }
+
+.criteria-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.criteria-table th { font-size: 11px; font-weight: 500; color: #888; padding: 7px 8px; border-bottom: 0.5px solid #e8e8e4; text-align: center; background: #fafaf8; }
+.criteria-table th.left { text-align: left; }
+.criteria-table td { padding: 9px 8px; border-bottom: 0.5px solid #e8e8e4; vertical-align: middle; color: #1a1a1a; }
+.criteria-table tr:last-child td { border-bottom: none; }
+.no-col { width: 28px; text-align: center; color: #aaa; font-size: 11px; }
+.bobot-col { width: 52px; text-align: center; font-size: 11px; color: #888; }
+.plan-select { width: 58px; padding: 5px 4px; font-size: 12px; border: 0.5px solid #ddd; border-radius: 5px; background: #fff; font-family: inherit; text-align: center; }
+.plan-fixed { text-align: center; font-size: 12px; color: #888; }
+.num-input { width: 62px; padding: 5px 6px; font-size: 12px; border: 0.5px solid #ddd; border-radius: 5px; background: #fff; font-family: inherit; text-align: center; }
+.num-input:focus { outline: none; border-color: #1D9E75; }
+.num-input:disabled { background: #f5f5f3; color: #aaa; }
+.ach-pill { font-size: 12px; font-weight: 500; padding: 3px 7px; border-radius: 4px; display: inline-block; min-width: 44px; text-align: center; background: #f0f0ee; color: #888; }
+.score-radio { display: flex; justify-content: center; gap: 3px; }
+.score-radio label { cursor: pointer; }
+.score-radio input[type=radio] { display: none; }
+.score-btn { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 5px; border: 0.5px solid #ddd; font-size: 12px; font-weight: 500; color: #aaa; cursor: pointer; transition: all 0.12s; }
+.score-radio input[type=radio]:checked + .score-btn.s0 { background: #f7c1c1; color: #a32d2d; border-color: #f09595; }
+.score-radio input[type=radio]:checked + .score-btn.s1 { background: #fac775; color: #854f0b; border-color: #ef9f27; }
+.score-radio input[type=radio]:checked + .score-btn.s2 { background: #c0dd97; color: #3b6d11; border-color: #97c459; }
+.score-radio input[type=radio]:checked + .score-btn.s3 { background: #9fe1cb; color: #0f6e56; border-color: #5dcaa5; }
+.notes-cell textarea { width: 100%; font-size: 11px; border: 0.5px solid #ddd; border-radius: 5px; padding: 5px 7px; resize: vertical; min-height: 36px; background: #fff; font-family: inherit; color: #333; }
+.kriteria-cell { font-size: 11px; color: #888; line-height: 1.45; margin-top: 3px; padding: 4px 6px; background: #f5f5f3; border-radius: 4px; border-left: 2px solid #ddd; white-space: pre-line; }
+
+/* Efektivitas kolam */
+.eff-section { background: #f5f5f3; border-radius: 8px; padding: 12px 14px; margin: 8px 0 4px; }
+.eff-section-title { font-size: 12px; font-weight: 500; color: #1a1a1a; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.eff-badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 3px; background: #e1f5ee; color: #0f6e56; }
+
+.ketentuan-box { background: #fff; border: 0.5px solid #e8e8e4; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; }
+.ketentuan-title { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 8px; }
+.ketentuan-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.ketentuan-item { border-radius: 6px; padding: 8px 10px; }
+.k-blue { background: #e6f1fb; } .k-blue .kt { color: #185fa5; }
+.k-green { background: #eaf3de; } .k-green .kt { color: #3b6d11; }
+.k-amber { background: #faeeda; } .k-amber .kt { color: #854f0b; }
+.kt { font-size: 11px; font-weight: 500; margin-bottom: 3px; }
+.kd { font-size: 11px; line-height: 1.45; }
+.k-blue .kd { color: #185fa5; } .k-green .kd { color: #3b6d11; } .k-amber .kd { color: #854f0b; }
+
+.eff-col-head { font-size: 11px; color: #888; text-align: center; }
+.eff-kolam-list { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+.eff-kolam-row { display: grid; grid-template-columns: 1fr 120px 72px 72px 64px 88px 96px 28px; gap: 5px; align-items: center; }
+.eff-kolam-row input, .eff-kolam-row select { padding: 5px 7px; font-size: 12px; border: 0.5px solid #ddd; border-radius: 5px; background: #fff; color: #1a1a1a; font-family: inherit; width: 100%; }
+.eff-kolam-row input:focus, .eff-kolam-row select:focus { outline: none; border-color: #1D9E75; }
+.eff-kolam-row input:disabled { background: #f5f5f3; color: #aaa; }
+.btn-add-kolam { font-size: 12px; color: #1D9E75; border: 1px dashed #5dcaa5; background: transparent; padding: 5px 12px; border-radius: 5px; cursor: pointer; margin-top: 6px; font-family: inherit; }
+.btn-add-kolam:hover { background: #f0faf6; }
+.btn-remove-kolam { font-size: 13px; color: #aaa; cursor: pointer; text-align: center; }
+.btn-remove-kolam:hover { color: #e24b4a; }
+.summary-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 12px; padding-top: 10px; border-top: 0.5px solid #e0e0d8; }
+.stat-label { font-size: 11px; color: #888; margin-bottom: 3px; }
+.stat-val { font-size: 16px; font-weight: 500; color: #1a1a1a; }
+
+/* Summary */
+.summary-card { background: #fff; border-radius: 12px; padding: 1.25rem; margin-top: 1.5rem; border: 0.5px solid #e0e0d8; }
+.bar-wrap { margin-bottom: 10px; }
+.bar-label { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-bottom: 3px; }
+.bar-track { height: 7px; background: #f0f0ee; border-radius: 4px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+.total-row { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 0.5px solid #e8e8e4; margin-top: 0.5rem; }
+.total-score { font-size: 22px; font-weight: 500; color: #0f6e56; }
+.grade-badge { display: inline-block; font-size: 12px; font-weight: 500; padding: 3px 10px; border-radius: 8px; }
+.param-box { background: #fafaf8; border-radius: 8px; padding: 10px 14px; margin-top: 10px; border: 0.5px solid #e8e8e4; }
+.param-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; font-size: 12px; }
+.param-row:last-child { margin-bottom: 0; }
+.param-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+/* Pernyataan */
+.pernyataan-card { background: #fff; border-radius: 12px; padding: 1.1rem 1.25rem; margin-top: 1.5rem; border: 0.5px solid #e0e0d8; }
+.check-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; cursor: pointer; }
+.check-row input[type=checkbox] { width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0; accent-color: #1D9E75; cursor: pointer; }
+.check-label { font-size: 13px; color: #1a1a1a; line-height: 1.5; }
+.check-label span { font-size: 12px; color: #777; display: block; margin-top: 2px; }
+.sign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+.sign-box { border: 0.5px solid #e0e0d8; border-radius: 8px; padding: 10px 12px; background: #fafaf8; }
+.sign-label { font-size: 11px; color: #888; margin-bottom: 6px; }
+.sign-fields { display: flex; flex-direction: column; gap: 6px; }
+.sign-fields input { width: 100%; padding: 6px 8px; font-size: 12px; border: 0.5px solid #ddd; border-radius: 5px; background: #fff; font-family: inherit; color: #1a1a1a; }
+.sign-area { height: 50px; border: 1px dashed #ccc; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #aaa; margin-top: 6px; }
+
+.btn-row { display: flex; gap: 10px; margin-top: 1.25rem; flex-wrap: wrap; }
+.btn-primary { padding: 9px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; background: #1D9E75; color: #fff; border: none; font-family: inherit; }
+.btn-primary:hover { background: #178a65; }
+.btn-secondary { padding: 9px 20px; border-radius: 8px; font-size: 13px; cursor: pointer; background: transparent; color: #333; border: 0.5px solid #ccc; font-family: inherit; }
+.btn-secondary:hover { background: #f5f5f3; }
+
+@media print {
+  body { background: #fff; }
+  .btn-row { display: none; }
+  .section-body { display: block !important; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>Self Assessment — Kualitas Pengelolaan Lingkungan Kontraktor</h1>
+    <p>Berdasarkan KPI Contractor Environmental Performance Review</p>
+  </div>
+
+  <!-- DOKUMEN PENGANTAR -->
+  <div class="card">
+    <div class="card-title">Dokumen Pengantar</div>
+    <label class="upload-zone" for="file-upload" id="upload-zone">
+      <input type="file" id="file-upload" multiple accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" onchange="handleFiles(this.files)">
+      <div class="upload-icon">&#8682;</div>
+      <div class="upload-main">Klik untuk mengunggah dokumen pengantar</div>
+      <div class="upload-sub">PDF, Word, atau gambar — maks 10 MB per file</div>
+    </label>
+    <div class="file-list" id="file-list"></div>
+  </div>
+
+  <!-- DATA KONTRAKTOR -->
+  <div class="card">
+    <div class="card-title">Data Kontraktor & Penilaian</div>
+    <div class="grid-2">
+      <div class="meta-item"><label>Nama Perusahaan Kontraktor</label><input type="text" placeholder="PT / CV ..."></div>
+      <div class="meta-item"><label>Jenis Bidang Jasa</label>
+        <select><option value="">Pilih bidang jasa...</option><option>Jasa Pertambangan (Mining)</option><option>Jasa Konstruksi</option><option>Jasa Rental Alat Berat</option><option>Jasa Angkutan / Hauling</option><option>Jasa Eksplorasi</option><option>Jasa Pemeliharaan & Perawatan</option><option>Jasa Catering & General Support</option><option>Jasa Keamanan</option><option>Jasa Laboratorium & Pengujian</option><option>Lainnya</option></select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="meta-item"><label>Department Pemilik Kontrak</label><input type="text" placeholder="Dept. Mining / Infrastructure / HRGA ..."></div>
+      <div class="meta-item"><label>Nama PIC Penilai</label><input type="text" placeholder="Nama & jabatan penilai"></div>
+    </div>
+    <div class="grid-2">
+      <div class="meta-item"><label>Periode Penilaian</label>
+        <select><option value="">Pilih periode...</option><option>Januari 2026</option><option>Februari 2026</option><option>Maret 2026</option><option>April 2026</option><option>Mei 2026</option><option>Juni 2026</option><option>Juli 2026</option><option>Agustus 2026</option><option>September 2026</option><option>Oktober 2026</option><option>November 2026</option><option>Desember 2026</option></select>
+      </div>
+      <div class="meta-item"><label>Jenis Kontraktor (Standar KPI)</label>
+        <select id="kontraktor-type" onchange="switchType(this.value)"><option value="mining">Mining</option><option value="support">Rental / Konstruksi / Support</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend-row">
+    <span style="font-size:12px;font-weight:500;color:#333;">Skala Nilai:</span>
+    <span><span class="legend-dot" style="background:#f09595;"></span>0 – Tidak Comply</span>
+    <span><span class="legend-dot" style="background:#fac775;"></span>1 – Less Comply (&lt;50%)</span>
+    <span><span class="legend-dot" style="background:#c0dd97;"></span>2 – Partial Comply (50–99%)</span>
+    <span><span class="legend-dot" style="background:#9fe1cb;"></span>3 – Full Comply (100%)</span>
+  </div>
+
+  <div id="form-sections"></div>
+
+  <!-- REKAPITULASI -->
+  <div class="summary-card">
+    <div style="font-size:13px;font-weight:500;margin-bottom:1rem;color:#1a1a1a;">Rekapitulasi Penilaian</div>
+    <div id="bars"></div>
+    <div class="total-row">
+      <div>
+        <div style="font-size:13px;font-weight:500;color:#1a1a1a;">Total Skor Keseluruhan</div>
+        <div style="font-size:12px;color:#888;margin-top:2px;" id="pct-label">—</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="total-score" id="total-score">— / —</div>
+        <div style="margin-top:4px;" id="grade-wrap"></div>
+      </div>
+    </div>
+    <div class="param-box">
+      <div style="font-size:12px;font-weight:500;color:#333;margin-bottom:6px;">Parameter Keputusan</div>
+      <div class="param-row"><span class="param-dot" style="background:#9fe1cb;"></span><span style="min-width:70px;">&gt; 80%</span><span style="color:#888;">Tidak ada indikasi ketidaksesuaian</span></div>
+      <div class="param-row"><span class="param-dot" style="background:#fac775;"></span><span style="min-width:70px;">60% – 80%</span><span style="color:#888;">Ada indikasi pengelolaan lingkungan yang tidak comply</span></div>
+      <div class="param-row"><span class="param-dot" style="background:#f09595;"></span><span style="min-width:70px;">&lt; 60%</span><span style="color:#888;">Tidak comply</span></div>
+    </div>
+  </div>
+
+  <!-- PERNYATAAN -->
+  <div class="pernyataan-card">
+    <div style="font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:8px;">Pernyataan & Pengesahan</div>
+    <div style="font-size:12px;color:#777;line-height:1.6;margin-bottom:12px;">Dengan menandatangani dokumen ini, pihak-pihak di bawah menyatakan bahwa self assessment pengelolaan lingkungan ini telah dilaksanakan dengan jujur, benar, dan sesuai kondisi aktual di lapangan.</div>
+    <label class="check-row"><input type="checkbox"><span class="check-label">Penilaian ini telah dilakukan secara mandiri dan sesuai kondisi lapangan yang sebenarnya.<span>Penilai menyatakan bahwa seluruh data yang diisi adalah benar dan dapat dipertanggungjawabkan.</span></span></label>
+    <label class="check-row"><input type="checkbox"><span class="check-label">Penilaian ini telah diketahui dan disetujui oleh Pimpinan Perusahaan Kontraktor.<span>Pimpinan menyatakan komitmen untuk menindaklanjuti seluruh temuan dan rekomendasi yang dihasilkan.</span></span></label>
+    <label class="check-row"><input type="checkbox"><span class="check-label">Penilaian ini telah diketahui oleh Contract Owner Perusahaan Pemberi Kerja.<span>Contract Owner menyatakan bahwa penilaian telah diterima dan akan ditindaklanjuti sesuai mekanisme pengelolaan kontraktor.</span></span></label>
+    <div class="sign-grid">
+      <div class="sign-box"><div class="sign-label">Penilai (PIC Kontraktor)</div><div class="sign-fields"><input type="text" placeholder="Nama lengkap"><input type="text" placeholder="Jabatan"><input type="date"></div><div class="sign-area">Tanda tangan</div></div>
+      <div class="sign-box"><div class="sign-label">Pimpinan Perusahaan Kontraktor</div><div class="sign-fields"><input type="text" placeholder="Nama lengkap"><input type="text" placeholder="Jabatan (Direktur / GM / ...)"><input type="date"></div><div class="sign-area">Tanda tangan & Stempel</div></div>
+      <div class="sign-box"><div class="sign-label">Contract Owner — Dept. Pemberi Kerja</div><div class="sign-fields"><input type="text" placeholder="Nama lengkap"><input type="text" placeholder="Jabatan"><input type="text" placeholder="Departemen"><input type="date"></div><div class="sign-area">Tanda tangan</div></div>
+      <div class="sign-box"><div class="sign-label">PIC Lingkungan — SCM / Enviro Dept.</div><div class="sign-fields"><input type="text" placeholder="Nama lengkap"><input type="text" placeholder="Jabatan"><input type="text" placeholder="Departemen"><input type="date"></div><div class="sign-area">Tanda tangan</div></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="window.print()">&#128438; Cetak / Simpan PDF</button>
+    <button class="btn-secondary" onclick="resetAll()">Reset Form</button>
+  </div>
+</div>
+
+<script>
+let kolamRows=[], kolamCounter=1, currentType='mining', uploadedFiles=[];
+
+const mwItemsA=[
+  {ind:'Pembuatan Perimeter Ditch In Pit',bobot:'15%',kriteria:'Jumlah perimeter ditch di pit yang sudah terbangun sesuai rekomendasi hydro\n- 100% sesuai rekomendasi → nilai 3\n- 50–99% memenuhi rekomendasi → nilai 2\n- <50% banyak ketidaksesuaian → nilai 1'},
+  {ind:'Pemeliharaan Perimeter Ditch Stockpile',bobot:'15%',kriteria:'- Mengirimkan lokasi dumpingan stockpile setiap minggu\n- Mengirimkan jadwal maintenance semua area stockpile\n- 100% progress sesuai jadwal maintenance'},
+  {ind:'Pemeliharaan Fasilitas Perimeter',bobot:'20%',kriteria:'- Mengirimkan jadwal maintenance semua fasilitas setiap akhir bulan\n- 100% progress sesuai jadwal maintenance'},
+  {ind:'Pembuatan Pocket Pond / Sediment Trap (sesuai rekomendasi)',bobot:'15%',kriteria:'Jumlah pocket pond/sediment trap yang terbangun sesuai rekomendasi hydro\n- 100% sesuai → nilai 3  |  50–99% → nilai 2  |  <50% → nilai 1'},
+  {ind:'Pemeliharaan Fasilitas Pocket Pond / Sediment Trap',bobot:'20%',kriteria:'- Mengirimkan jadwal maintenance setiap akhir bulan\n- 100% progress sesuai jadwal\n- Maks sedimentasi 50% dari kedalaman kolam harus maintenance'},
+];
+const otherSections=[
+  {id:'hw',title:'Hazardous Waste Management (Limbah B3)',bobot:'20%',badge:{bg:'#fcebeb',color:'#a32d2d'},planVal:1,items:[
+    {ind:'Penyimpanan Limbah B3',bobot:'20%',kriteria:'Memenuhi standar penyimpanan limbah B3 sesuai regulasi (PP 22/2021)'},
+    {ind:'Pengaturan Limbah B3',bobot:'20%',kriteria:'Tata letak dan pengaturan limbah B3 di TPS sesuai ketentuan'},
+    {ind:'Kemasan Limbah B3',bobot:'20%',kriteria:'Kemasan limbah B3 dalam kondisi baik, berlabel, dan tertutup rapat'},
+    {ind:'Masa Simpan Limbah B3',bobot:'20%',kriteria:'Masa simpan tidak melebihi ketentuan (maks 90 hari untuk penghasil besar)'},
+    {ind:'Ketentuan Teknis Pengelolaan Limbah B3',bobot:'20%',kriteria:'Seluruh ketentuan teknis terpenuhi (manifest, pengangkut berizin, neraca limbah, dll)'},
+  ]},
+  {id:'hzm',title:'Hazardous Management (Bangunan / Fuel Storage)',bobot:'15%',badge:{bg:'#faeeda',color:'#854f0b'},planVal:1,items:[
+    {ind:'Penyimpanan B3',bobot:'40%',kriteria:'Fasilitas penyimpanan B3 (BBM, oli, bahan kimia) memenuhi standar'},
+    {ind:'Pengaturan dan Simboling B3',bobot:'30%',kriteria:'Simbol dan label bahaya terpasang dengan benar di seluruh area penyimpanan B3'},
+    {ind:'Ketentuan Teknis Pengelolaan B3',bobot:'30%',kriteria:'Bund wall, drip tray, APAR, dan fasilitas safety lainnya tersedia dan berfungsi'},
+  ]},
+  {id:'wm',title:'Waste Management (Sampah / Limbah Padat)',bobot:'20%',badge:{bg:'#eaf3de',color:'#3b6d11'},planVal:1,items:[
+    {ind:'Pemilahan Sampah',bobot:'40%',kriteria:'Pemilahan sampah organik, anorganik, dan B3 dilakukan di semua titik pengumpulan'},
+    {ind:'Pengelolaan Sampah',bobot:'20%',kriteria:'Pengelolaan sampah domestik sesuai prosedur (pengangkutan, TPS, dll)'},
+    {ind:'Pengelolaan Sampah Jenis Lainnya (Logam, Ban, Karet, dll)',bobot:'40%',kriteria:'Sampah logam bekas, ban bekas, karet dikelola dan dilaporkan dengan benar'},
+  ]},
+  {id:'ea',title:'Environmental Accident (Pencemaran / Insiden Lingkungan)',bobot:'15%',badge:{bg:'#faece7',color:'#993c1d'},planVal:1,items:[
+    {ind:'Pencemaran Tumpahan Limbah B3 atau B3',bobot:'40%',kriteria:'Tidak ada kejadian tumpahan B3 yang tidak tertangani / mencemari lingkungan'},
+    {ind:'Pencemaran Lingkungan dari Pembuangan Limbah Domestik dan Lainnya',bobot:'30%',kriteria:'Tidak ada pembuangan limbah domestik atau limbah lain sembarangan'},
+    {ind:'Handling Tumpahan',bobot:'20%',kriteria:'SOP penanganan tumpahan tersedia, disosialisasikan, dan dilaksanakan dengan benar'},
+    {ind:'Laporan Investigasi / BA',bobot:'10%',kriteria:'Setiap insiden lingkungan memiliki BA/investigasi yang close 100%'},
+  ]},
+  {id:'ec',title:'Enviro Compliance (Kepatuhan & Pelaporan)',bobot:'10%',badge:{bg:'#eeedfe',color:'#534ab7'},items:[
+    {ind:'Inspeksi Internal',bobot:'20%',planOverride:4,kriteria:'1x per minggu — checklist inspeksi lingkungan internal dilakukan dan didokumentasikan'},
+    {ind:'CAPA Progress & Close',bobot:'20%',planOverride:1,kriteria:'Close sebelum duedate = 100% | Lewat <3 hari = 75% | >3 hari = 50% | >7 hari = 25% | 1 bulan = 0%'},
+    {ind:'Laporan Mingguan',bobot:'20%',planOverride:4,kriteria:'1x seminggu — laporan dikirimkan setiap hari Minggu'},
+    {ind:'Laporan Bulanan',bobot:'20%',planOverride:1,kriteria:'1x sebulan — laporan dikirimkan paling lambat tanggal 5'},
+    {ind:'Kehadiran Meeting',bobot:'20%',planOverride:4,kriteria:'1x seminggu — perwakilan kontraktor hadir dalam meeting koordinasi lingkungan'},
+  ]},
+];
+const supportData=[
+  {id:'shw',title:'Hazardous Waste Management (Limbah B3)',bobot:'25%',badge:{bg:'#fcebeb',color:'#a32d2d'},planVal:1,items:[
+    {ind:'Penyimpanan Limbah B3',bobot:'20%',kriteria:'Memenuhi standar penyimpanan limbah B3 sesuai regulasi'},
+    {ind:'Pengaturan Limbah B3',bobot:'20%',kriteria:'Tata letak dan pengaturan limbah B3 di TPS sesuai ketentuan'},
+    {ind:'Kemasan Limbah B3',bobot:'20%',kriteria:'Kemasan limbah B3 dalam kondisi baik, berlabel, dan tertutup rapat'},
+    {ind:'Masa Simpan Limbah B3',bobot:'20%',kriteria:'Masa simpan tidak melebihi ketentuan'},
+    {ind:'Ketentuan Teknis Pengelolaan Limbah B3',bobot:'20%',kriteria:'Seluruh ketentuan teknis terpenuhi (manifest, pengangkut berizin, dll)'},
+  ]},
+  {id:'shzm',title:'Hazardous Management (Penyimpanan B3 / Bahan Kimia)',bobot:'20%',badge:{bg:'#faeeda',color:'#854f0b'},planVal:1,items:[
+    {ind:'Penyimpanan B3',bobot:'40%',kriteria:'Fasilitas penyimpanan B3 memenuhi standar (bund wall, ventilasi, dll)'},
+    {ind:'Pengaturan dan Simboling B3',bobot:'30%',kriteria:'Simbol dan label bahaya terpasang dengan benar di seluruh area penyimpanan'},
+    {ind:'Ketentuan Teknis Pengelolaan B3',bobot:'30%',kriteria:'MSDS tersedia, APAR terpasang, petugas terlatih penanganan B3'},
+  ]},
+  {id:'swm',title:'Waste Management (Sampah / Limbah Padat)',bobot:'25%',badge:{bg:'#eaf3de',color:'#3b6d11'},planVal:1,items:[
+    {ind:'Pemilahan Sampah',bobot:'40%',kriteria:'Pemilahan sampah organik, anorganik, dan B3 dilakukan di semua titik pengumpulan'},
+    {ind:'Pengelolaan Sampah',bobot:'20%',kriteria:'Pengelolaan sampah domestik sesuai prosedur'},
+    {ind:'Pengelolaan Sampah Jenis Lainnya (Logam, Ban, Karet, dll)',bobot:'40%',kriteria:'Sampah logam, ban bekas, karet dikelola dan dilaporkan dengan benar'},
+  ]},
+  {id:'sea',title:'Environmental Accident (Pencemaran / Insiden Lingkungan)',bobot:'20%',badge:{bg:'#faece7',color:'#993c1d'},planVal:1,items:[
+    {ind:'Pencemaran Tumpahan Limbah B3 atau B3',bobot:'40%',kriteria:'Tidak ada kejadian tumpahan B3 yang tidak tertangani'},
+    {ind:'Pencemaran Lingkungan Lainnya',bobot:'30%',kriteria:'Tidak ada pembuangan limbah sembarangan di area kerja'},
+    {ind:'Handling Tumpahan',bobot:'20%',kriteria:'SOP penanganan tumpahan tersedia, disosialisasikan, dan dilaksanakan'},
+    {ind:'Investigasi / BA / CAPA Insiden',bobot:'10%',kriteria:'Setiap insiden lingkungan memiliki BA/investigasi yang close 100%'},
+  ]},
+  {id:'sec',title:'Enviro Compliance (Kepatuhan & Pelaporan)',bobot:'10%',badge:{bg:'#eeedfe',color:'#534ab7'},items:[
+    {ind:'Inspeksi Internal',bobot:'20%',planOverride:4,kriteria:'1x per minggu'},
+    {ind:'CAPA Progress & Close',bobot:'20%',planOverride:1,kriteria:'Close sebelum duedate = 100% | >3 hari = 50% | >7 hari = 25%'},
+    {ind:'Laporan Mingguan',bobot:'20%',planOverride:4,kriteria:'1x seminggu — hari Minggu'},
+    {ind:'Laporan Bulanan',bobot:'20%',planOverride:1,kriteria:'1x sebulan — tanggal 5'},
+    {ind:'Kehadiran Meeting',bobot:'20%',planOverride:4,kriteria:'1x seminggu'},
+  ]},
+];
+
+function calcEff(kondisi,inlet,outlet){
+  if(kondisi==='no_discharge') return {eff:100,reason:'No Discharge'};
+  if(!isNaN(outlet)&&outlet<200) return {eff:100,reason:'TSS Outlet < 200 mg/L'};
+  if(!isNaN(inlet)&&!isNaN(outlet)&&inlet>0){const e=Math.max(0,Math.round(((inlet-outlet)/inlet)*100));return{eff:e,reason:'Normal'};}
+  return null;
+}
+
+function handleFiles(files){
+  Array.from(files).forEach(f=>{if(!uploadedFiles.find(u=>u.name===f.name&&u.size===f.size))uploadedFiles.push(f);});
+  renderFileList();
+}
+function renderFileList(){
+  const list=document.getElementById('file-list');
+  if(!uploadedFiles.length){list.innerHTML='';return;}
+  list.innerHTML=uploadedFiles.map((f,i)=>{
+    const ext=f.name.split('.').pop().toLowerCase();
+    const ec=ext==='pdf'?'ext-pdf':(ext==='doc'||ext==='docx')?'ext-doc':['jpg','jpeg','png'].includes(ext)?'ext-img':'ext-other';
+    const sz=f.size>1048576?(f.size/1048576).toFixed(1)+' MB':(f.size/1024).toFixed(0)+' KB';
+    return `<div class="file-item"><span class="file-ext ${ec}">${ext.toUpperCase()}</span><span class="file-item-name">${f.name}</span><span class="file-item-size">${sz}</span><span class="file-remove" onclick="removeFile(${i})">&#10005;</span></div>`;
+  }).join('');
+}
+function removeFile(i){uploadedFiles.splice(i,1);renderFileList();}
+const uz=document.getElementById('upload-zone');
+uz.addEventListener('dragover',e=>{e.preventDefault();uz.style.background='#f0f0ee';});
+uz.addEventListener('dragleave',()=>{uz.style.background='#fafaf8';});
+uz.addEventListener('drop',e=>{e.preventDefault();uz.style.background='#fafaf8';handleFiles(e.dataTransfer.files);});
+
+function switchType(t){currentType=t;renderSections();updateScores();}
+
+function mwRow(item,ii){
+  const opts=Array.from({length:10},(_,k)=>`<option value="${k+1}">${k+1}</option>`).join('');
+  return `<tr>
+    <td class="no-col">${ii+1}</td>
+    <td><div style="font-size:13px;line-height:1.5;">${item.ind}</div><div class="kriteria-cell">${item.kriteria}</div></td>
+    <td class="bobot-col">${item.bobot}</td>
+    <td style="text-align:center;"><select class="plan-select" id="plan-mw-${ii}" onchange="recalcAch('mw',${ii})">${opts}</select></td>
+    <td style="text-align:center;"><input class="num-input" type="number" min="0" id="aktual-mw-${ii}" placeholder="0" onchange="recalcAch('mw',${ii})"></td>
+    <td style="text-align:center;"><span id="ach-mw-${ii}" class="ach-pill">—</span></td>
+    <td><div class="score-radio">${[0,1,2,3].map(v=>`<label><input type="radio" name="score-mw-${ii}" value="${v}" onchange="updateScores()"><span class="score-btn s${v}">${v}</span></label>`).join('')}</div></td>
+    <td class="notes-cell"><textarea placeholder="Catatan..."></textarea></td>
+  </tr>`;
+}
+
+function renderEffBlock(){
+  return `<div class="eff-section">
+    <div class="eff-section-title">Ketaatan Kualitas Air Limbah Tambang — Efektivitas Kolam Sedimen <span class="eff-badge">Bobot 15%</span></div>
+    <div class="ketentuan-box">
+      <div class="ketentuan-title">&#9432; Ketentuan Perhitungan Efektivitas</div>
+      <div class="ketentuan-grid">
+        <div class="ketentuan-item k-blue"><div class="kt">&#9312; No Discharge</div><div class="kd">Kolam tidak membuang air ke badan air → Efektivitas = <strong>100%</strong></div></div>
+        <div class="ketentuan-item k-green"><div class="kt">&#9313; TSS Outlet &lt; 200 mg/L</div><div class="kd">Nilai TSS outlet memenuhi baku mutu → Efektivitas = <strong>100%</strong></div></div>
+        <div class="ketentuan-item k-amber"><div class="kt">&#9314; Kondisi Normal</div><div class="kd">Efektivitas = (TSS Inlet − TSS Outlet) / TSS Inlet × 100%. Minimum: <strong>≥ 30%</strong></div></div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 120px 72px 72px 64px 88px 96px 28px;gap:5px;margin-bottom:4px;">
+      <div class="eff-col-head" style="text-align:left;">Nama / ID Kolam</div>
+      <div class="eff-col-head">Kondisi Kolam</div>
+      <div class="eff-col-head">TSS Inlet<br><span style="font-size:10px;">(mg/L)</span></div>
+      <div class="eff-col-head">TSS Outlet<br><span style="font-size:10px;">(mg/L)</span></div>
+      <div class="eff-col-head">Efektivitas</div>
+      <div class="eff-col-head">Status</div>
+      <div class="eff-col-head">Tgl Ukur</div>
+      <div></div>
+    </div>
+    <div class="eff-kolam-list" id="kolam-list"></div>
+    <button class="btn-add-kolam" onclick="addKolam()">+ Tambah Kolam</button>
+    <div class="summary-stats">
+      <div><div class="stat-label">Rata-rata Efektivitas</div><div class="stat-val" id="avg-eff-val">—</div></div>
+      <div><div class="stat-label">Kolam Comply (≥30%)</div><div class="stat-val" id="kolam-comply">—</div></div>
+      <div><div class="stat-label">Status Keseluruhan</div><div id="eff-overall-status" style="margin-top:4px;">—</div></div>
+    </div>
+    <div style="font-size:11px;color:#888;margin-top:10px;padding:7px 10px;background:#fff;border-radius:5px;border-left:2px solid #ddd;line-height:1.5;">
+      Pemantauan efektivitas sedtrap dilakukan setiap hari. Tim monitoring SCM akan melakukan pemantauan pada seluruh area 1 bulan sekali untuk memvalidasi hasil pemantauan kontraktor.
+    </div>
+    <div style="margin-top:12px;padding-top:10px;border-top:0.5px solid #e8e8e4;">
+      <div style="font-size:12px;color:#888;margin-bottom:6px;">Nilai KPI — Ketaatan Kualitas Air Limbah Tambang (Bobot 15%)</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span style="font-size:12px;color:#888;">Nilai:</span>
+        <div class="score-radio">${[0,1,2,3].map(v=>`<label><input type="radio" name="score-mw-5" value="${v}" onchange="updateScores()"><span class="score-btn s${v}">${v}</span></label>`).join('')}</div>
+        <textarea style="flex:1;min-width:160px;font-size:11px;border:0.5px solid #ddd;border-radius:5px;padding:5px 7px;resize:vertical;min-height:32px;background:#fff;font-family:inherit;" placeholder="Catatan / bukti terkait ketaatan kualitas air..."></textarea>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addKolam(){kolamRows.push({id:kolamCounter++});renderKolamList();}
+function removeKolam(id){kolamRows=kolamRows.filter(r=>r.id!==id);renderKolamList();}
+function renderKolamList(){
+  const el=document.getElementById('kolam-list');
+  if(!el) return;
+  if(!kolamRows.length){el.innerHTML='<div style="font-size:12px;color:#aaa;padding:8px 0;">Belum ada kolam. Klik "+ Tambah Kolam".</div>';updateAvgEff();return;}
+  el.innerHTML=kolamRows.map(r=>`
+    <div class="eff-kolam-row" id="kolam-row-${r.id}">
+      <input type="text" placeholder="Contoh: Sedtrap-01 / Pond A" id="kname-${r.id}">
+      <select id="kcond-${r.id}" onchange="onKondisiChange(${r.id})"><option value="normal">Normal / Discharge</option><option value="no_discharge">No Discharge</option></select>
+      <input type="number" min="0" placeholder="—" id="inlet-${r.id}" onchange="calcKolamEff(${r.id})">
+      <input type="number" min="0" placeholder="—" id="outlet-${r.id}" onchange="calcKolamEff(${r.id})">
+      <div style="display:flex;align-items:center;justify-content:center;"><span id="keff-${r.id}" class="ach-pill">—</span></div>
+      <div style="display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px;"><span id="kstat-${r.id}" style="font-size:11px;color:#aaa;">—</span><span id="kreason-${r.id}" style="font-size:10px;color:#aaa;"></span></div>
+      <input type="date" id="ktgl-${r.id}">
+      <span class="btn-remove-kolam" onclick="removeKolam(${r.id})">&#10005;</span>
+    </div>`).join('');
+  updateAvgEff();
+}
+function onKondisiChange(id){
+  const cond=document.getElementById('kcond-'+id)?.value;
+  const ie=document.getElementById('inlet-'+id), oe=document.getElementById('outlet-'+id);
+  if(cond==='no_discharge'){if(ie){ie.value='';ie.disabled=true;ie.placeholder='N/A';}if(oe){oe.value='';oe.disabled=true;oe.placeholder='N/A';}}
+  else{if(ie){ie.disabled=false;ie.placeholder='—';}if(oe){oe.disabled=false;oe.placeholder='—';}}
+  calcKolamEff(id);
+}
+function calcKolamEff(id){
+  const cond=document.getElementById('kcond-'+id)?.value||'normal';
+  const inlet=parseFloat(document.getElementById('inlet-'+id)?.value);
+  const outlet=parseFloat(document.getElementById('outlet-'+id)?.value);
+  const effEl=document.getElementById('keff-'+id), statEl=document.getElementById('kstat-'+id), reasonEl=document.getElementById('kreason-'+id);
+  if(!effEl||!statEl) return;
+  const res=calcEff(cond,inlet,outlet);
+  if(res){
+    const{eff,reason}=res, comply=eff>=30;
+    effEl.textContent=eff+'%'; effEl.style.background=comply?'#eaf3de':'#fcebeb'; effEl.style.color=comply?'#3b6d11':'#a32d2d';
+    statEl.textContent=comply?'✓ Comply':'✗ Tidak'; statEl.style.color=comply?'#3b6d11':'#a32d2d';
+    if(reason==='No Discharge'){reasonEl.textContent='No Discharge';reasonEl.style.background='#e6f1fb';reasonEl.style.color='#185fa5';reasonEl.style.padding='1px 5px';reasonEl.style.borderRadius='3px';}
+    else if(reason==='TSS Outlet < 200 mg/L'){reasonEl.textContent='TSS<200';reasonEl.style.background='#eaf3de';reasonEl.style.color='#3b6d11';reasonEl.style.padding='1px 5px';reasonEl.style.borderRadius='3px';}
+    else{reasonEl.textContent='';reasonEl.style.background='transparent';}
+  } else {
+    effEl.textContent='—';effEl.style.background='#f0f0ee';effEl.style.color='#aaa';
+    statEl.textContent='—';statEl.style.color='#aaa';
+    if(reasonEl){reasonEl.textContent='';reasonEl.style.background='transparent';}
+  }
+  updateAvgEff();
+}
+function updateAvgEff(){
+  let vals=[],comply=0;
+  kolamRows.forEach(r=>{
+    const cond=document.getElementById('kcond-'+r.id)?.value||'normal';
+    const inlet=parseFloat(document.getElementById('inlet-'+r.id)?.value);
+    const outlet=parseFloat(document.getElementById('outlet-'+r.id)?.value);
+    const res=calcEff(cond,inlet,outlet);
+    if(res){vals.push(res.eff);if(res.eff>=30)comply++;}
+  });
+  const ae=document.getElementById('avg-eff-val'), ce=document.getElementById('kolam-comply'), oe=document.getElementById('eff-overall-status');
+  if(!ae) return;
+  if(vals.length){
+    const avg=Math.round(vals.reduce((a,b)=>a+b,0)/vals.length);
+    ae.textContent=avg+'%'; ae.style.color=avg>=30?'#0f6e56':'#a32d2d';
+    ce.textContent=`${comply}/${vals.length}`; ce.style.color=comply===vals.length?'#0f6e56':comply>0?'#854f0b':'#a32d2d';
+    const all=comply===vals.length;
+    oe.innerHTML=`<span style="font-size:11px;font-weight:500;padding:3px 9px;border-radius:4px;background:${all?'#eaf3de':'#fcebeb'};color:${all?'#3b6d11':'#a32d2d'};">${all?'Semua Comply':'Ada yang Tidak Comply'}</span>`;
+  } else {
+    ae.textContent='—'; ae.style.color='#aaa'; ce.textContent='—'; ce.style.color='#aaa';
+    oe.innerHTML='<span style="font-size:12px;color:#aaa;">—</span>';
+  }
+}
+function renderSections(){
+  const cont=document.getElementById('form-sections'); cont.innerHTML='';
+  if(currentType==='mining'){
+    const mwDiv=document.createElement('div'); mwDiv.className='section';
+    mwDiv.innerHTML=`
+      <div class="section-header" onclick="toggleSec('mw',this)">
+        <span class="sec-badge" style="background:#e6f1fb;color:#185fa5;">Minewater Management</span>
+        <span class="section-title">Minewater Management (Sesuai Area Kerja)</span>
+        <span class="bobot-tag">Bobot 20%</span>
+        <span class="chevron open">&#9654;</span>
+      </div>
+      <div class="section-body open" id="body-mw">
+        <table class="criteria-table">
+          <thead><tr><th class="no-col">#</th><th class="left">Indikator & Kriteria</th><th>Bobot</th><th style="min-width:64px;">Plan</th><th style="min-width:64px;">Aktual</th><th style="min-width:60px;">Ach.%</th><th style="min-width:136px;">Nilai (0–3)</th><th style="min-width:130px;">Catatan / Bukti</th></tr></thead>
+          <tbody>${mwItemsA.map((item,ii)=>mwRow(item,ii)).join('')}</tbody>
+        </table>
+        ${renderEffBlock()}
+      </div>`;
+    cont.appendChild(mwDiv); kolamRows=[]; addKolam();
+    otherSections.forEach(sec=>cont.appendChild(buildSection(sec)));
+  } else { supportData.forEach(sec=>cont.appendChild(buildSection(sec))); }
+}
+function buildSection(sec){
+  const div=document.createElement('div'); div.className='section';
+  const rows=sec.items.map((item,ii)=>{
+    const pd=item.planOverride!==undefined?`<div class="plan-fixed">${item.planOverride}</div>`:`<div class="plan-fixed">${sec.planVal??1}</div>`;
+    return `<tr><td class="no-col">${ii+1}</td><td><div style="font-size:13px;line-height:1.5;">${item.ind}</div><div class="kriteria-cell">${item.kriteria}</div></td><td class="bobot-col">${item.bobot}</td><td style="text-align:center;">${pd}</td><td><div class="score-radio">${[0,1,2,3].map(v=>`<label><input type="radio" name="score-${sec.id}-${ii}" value="${v}" onchange="updateScores()"><span class="score-btn s${v}">${v}</span></label>`).join('')}</div></td><td class="notes-cell"><textarea placeholder="Catatan..."></textarea></td></tr>`;
+  }).join('');
+  div.innerHTML=`
+    <div class="section-header" onclick="toggleSec('${sec.id}',this)">
+      <span class="sec-badge" style="background:${sec.badge.bg};color:${sec.badge.color};">${sec.title.split('(')[0].trim()}</span>
+      <span class="section-title">${sec.title}</span><span class="bobot-tag">Bobot ${sec.bobot}</span>
+      <span class="chevron open">&#9654;</span>
+    </div>
+    <div class="section-body open" id="body-${sec.id}">
+      <table class="criteria-table">
+        <thead><tr><th class="no-col">#</th><th class="left">Indikator & Kriteria</th><th>Bobot</th><th style="min-width:60px;">Plan</th><th style="min-width:136px;">Nilai (0–3)</th><th style="min-width:130px;">Catatan / Bukti</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  return div;
+}
+function recalcAch(secId,ii){
+  const p=document.getElementById(`plan-${secId}-${ii}`), a=document.getElementById(`aktual-${secId}-${ii}`), ac=document.getElementById(`ach-${secId}-${ii}`);
+  if(!p||!a||!ac) return;
+  const plan=parseFloat(p.value), aktual=parseFloat(a.value);
+  if(!isNaN(plan)&&!isNaN(aktual)&&plan>0){const pct=Math.min(Math.round((aktual/plan)*100),100);ac.textContent=pct+'%';ac.style.background=pct>=80?'#eaf3de':pct>=60?'#faeeda':'#fcebeb';ac.style.color=pct>=80?'#3b6d11':pct>=60?'#854f0b':'#a32d2d';}
+  else{ac.textContent='—';ac.style.background='#f0f0ee';ac.style.color='#aaa';}
+}
+function toggleSec(id,header){document.getElementById('body-'+id).classList.toggle('open');header.querySelector('.chevron').classList.toggle('open');}
+function getScore(name){const r=document.querySelector(`input[name="${name}"]:checked`);return r?parseInt(r.value):null;}
+function updateScores(){
+  const sections=currentType==='mining'?[{id:'mw',title:'Minewater Management',count:6},...otherSections.map(s=>({id:s.id,title:s.title,count:s.items.length}))]:supportData.map(s=>({id:s.id,title:s.title,count:s.items.length}));
+  let html='',grand=0,grandMax=0;
+  sections.forEach(sec=>{
+    let total=0,max=sec.count*3;
+    for(let ii=0;ii<sec.count;ii++){const v=getScore(`score-${sec.id}-${ii}`);if(v!==null)total+=v;}
+    grand+=total;grandMax+=max;
+    const pct=Math.round((total/max)*100), bc=pct>=80?'#1D9E75':pct>=60?'#EF9F27':'#E24B4A';
+    html+=`<div class="bar-wrap"><div class="bar-label"><span>${sec.title}</span><span style="font-weight:500;">${total}/${max} <span style="font-weight:400;">(${pct}%)</span></span></div><div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${bc};"></div></div></div>`;
+  });
+  document.getElementById('bars').innerHTML=html;
+  const pct=grandMax>0?Math.round((grand/grandMax)*100):0;
+  document.getElementById('total-score').textContent=grandMax>0?`${grand} / ${grandMax}`:'— / —';
+  document.getElementById('pct-label').textContent=grandMax>0?`Persentase: ${pct}%`:'—';
+  let grade='—',gbg='transparent',gc='#aaa';
+  if(grandMax>0){if(pct>80){grade='Tidak Ada Indikasi';gbg='#eaf3de';gc='#3b6d11';}else if(pct>=60){grade='Ada Indikasi Ketidaksesuaian';gbg='#faeeda';gc='#854f0b';}else{grade='Tidak Comply';gbg='#fcebeb';gc='#a32d2d';}}
+  document.getElementById('grade-wrap').innerHTML=`<span class="grade-badge" style="background:${gbg};color:${gc};">${grade}</span>`;
+}
+function resetAll(){
+  uploadedFiles=[];renderFileList();
+  document.querySelectorAll('input[type=radio],input[type=checkbox]').forEach(r=>r.checked=false);
+  document.querySelectorAll('textarea').forEach(t=>t.value='');
+  document.querySelectorAll('input[type=text],input[type=date],input[type=number]').forEach(i=>i.value='');
+  document.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+  document.getElementById('kontraktor-type').value='mining';
+  currentType='mining';kolamRows=[];renderSections();updateScores();
+}
+renderSections();updateScores();
+</script>
+</body>
+</html>
